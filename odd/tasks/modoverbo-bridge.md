@@ -94,3 +94,11 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - Native horizontal track scrolling reached 12/12; all 12 testimonial portraits reported nonzero natural width once visited, with no broken image.
 - At 1024px, the book preview pages remain at least 27px inside the card's right border, and there is no horizontal page overflow.
 - Independent read-only verification passed `node --test` (18/18), `node --check script.js`, and `git diff --check main...HEAD`; both edition previews decoded and returned HTTP 200 locally. No deployment, push, or PR was performed.
+
+### Approved wrap-transition corrective follow-up
+- Scope: when autoplay wraps from the final testimonial to the first, jump directly instead of smoothly scrolling backward across the full track; keep normal adjacent-card autoplay smooth.
+- Effective TDD: enabled; exact runner `node --test`. Add a regression assertion and observe RED before changing production code.
+- Route: delegated direct, focused bug correction. No push, deploy, or PR.
+- [x] **T8 — Make carousel wrap transition immediate.** Autoplay now uses `behavior: 'auto'` only for last-to-first; adjacent moves remain smooth. Browser QA had shown smooth traversal across the whole track lets intermediate scroll events overwrite the wrapped active index. Route: delegated direct, focused correction. Commit: `fb17fb6` (`fix(carousel): jump instantly when autoplay wraps`); authored changed-line count: 8; cumulative T6–T8 count: 136.
+- T8 RED: focused `node --test --test-name-pattern='loops from the last example to the first'` failed as expected because wrap used `smooth` instead of `auto`. GREEN: focused test passed, then `node --test` — 19 passed, 0 failed; `node --check script.js` — passed; `git diff --check` — passed. The regression assertion also verifies the next arrow is enabled at the first-card destination. No new browser run was needed; browser failure evidence came from parent QA.
+- RDD state/outcome: globally off; do not start native review.
