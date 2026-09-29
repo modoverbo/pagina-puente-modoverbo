@@ -19,8 +19,8 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 
 ## Checklist
 - [x] **T1 — Publish the bridge page.** Wrote failing tests for structure, exact destinations, and local assets; built the semantic HTML/CSS page; copied the supplied portrait and authentic cover; verified mobile and desktop layouts. Work-unit commit: `ef28cb2`.
-- [x] **T2 — Refine hero and offer visuals.** Increased Arturo's mobile prominence and brightness without clipping his face, slightly trimmed hero typography, replaced drawn resource sheets with genuine captures, and inset the authentic book cover. Route: delegated direct; trigger: HTML/CSS/test/asset work spans multiple non-trivial files.
-- [x] **T3 — Add visibly disclosed fictional testimonial carousel.** Reused four demo examples, added eight varied fictional voices and candid generated portraits, and delivered a twelve-card carousel with swipe, arrows, keyboard support, safe autoplay, and a persistent pause control. Route: delegated direct; trigger: HTML/CSS/JS/test/asset work spans multiple non-trivial files.
+- [x] **T2 — Refine hero and offer visuals.** Increased Arturo's mobile prominence and brightness without clipping his face, slightly trimmed hero typography, replaced drawn resource sheets with genuine captures, and inset the authentic book cover. Route: delegated direct; trigger: HTML/CSS/test/asset work spans multiple non-trivial files. Work-unit commit: `49f6fa7`.
+- [x] **T3 — Add visibly disclosed fictional testimonial carousel.** Reused four demo examples, added eight varied fictional voices and candid generated portraits, and delivered a twelve-card carousel with swipe, arrows, keyboard support, safe autoplay, and a persistent pause control. Route: delegated direct; trigger: HTML/CSS/JS/test/asset work spans multiple non-trivial files. Work-unit commit: `49f6fa7`.
 
 ## Acceptance criteria
 - The first screen names Arturo Valdés and communicates the Modo Verbo promise quickly.
@@ -45,4 +45,4 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - Independent code review found and verified correction of the track-relative carousel scroll bug and missing persistent pause control. Real desktop navigation advanced to the intended third card; no page scroll jump was observed.
 - Eight new portraits were generated and optimized to 320px WebP files of 10–21KB each; exact generation prompts and source provenance for the four reused fictional portraits are in `assets/testimonials/PROVENANCE.md`.
 - The bridge folder is itself a nested Git repository, distinct from the parent `modoverbo` Git repository. Delivery commits for this follow-up belong on the bridge feature branch; prior parent-root Git references above document historical work only.
-- Next: record the local work-unit commit identity. No push or PR requested.
+- Next: local work-unit commit `49f6fa7` recorded. No push or PR requested.
