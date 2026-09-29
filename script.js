@@ -74,12 +74,12 @@
     }
   };
 
-  const goTo = (index, automatic = false) => {
+  const goTo = (index, automatic = false, immediate = false) => {
     activeIndex = Math.max(0, Math.min(cards.length - 1, index));
     const card = cards[activeIndex];
     const cardLeft = card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
     const left = Math.max(0, cardLeft - (track.clientWidth - card.clientWidth) / 2);
-    track.scrollTo({ left, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    track.scrollTo({ left, behavior: immediate || reducedMotion.matches ? 'auto' : 'smooth' });
     render();
 
     if (automatic && activeIndex === cards.length - 1) autoplayFinished = true;
@@ -95,7 +95,7 @@
       userPaused = false;
       isHovered = false;
       hasFocus = false;
-      goTo(0);
+      goTo(0, false, true);
       return;
     }
     userPaused = !userPaused;

@@ -405,8 +405,10 @@ test('allows explicit resume while the pointer hovers and the toggle retains foc
   const events = new Map();
   let timerCallback = null;
   let intersectionCallback;
+  let scrollOffset = 0;
+  const scrollRequests = [];
   const cards = Array.from({ length: 12 }, (_, index) => ({
-    getBoundingClientRect() { return { left: index * 280, width: 250 }; },
+    getBoundingClientRect() { return { left: index * 280 - scrollOffset, width: 250 }; },
   }));
   const control = (name) => ({
     disabled: false,
@@ -417,11 +419,14 @@ test('allows explicit resume while the pointer hovers and the toggle retains foc
   });
   const track = {
     clientWidth: 300,
-    scrollLeft: 0,
+    get scrollLeft() { return scrollOffset; },
     addEventListener(event, callback) { events.set(`track:${event}`, callback); },
     getBoundingClientRect() { return { left: 0 }; },
     querySelectorAll() { return cards; },
-    scrollTo() {},
+    scrollTo(options) {
+      scrollRequests.push(options);
+      if (options.behavior === 'auto') scrollOffset = options.left;
+    },
   };
   const section = {
     addEventListener(event, callback) { events.set(`section:${event}`, callback); },
@@ -480,9 +485,20 @@ test('allows explicit resume while the pointer hovers and the toggle retains foc
   for (let index = 0; index < 11; index += 1) timerCallback();
   assert.equal(toggle.disabled, false, 'completed autoplay remains restartable');
   assert.equal(toggle.attributes['aria-label'], 'Reiniciar reproducción automática');
+
+  events.get('section:mouseenter')();
+  events.get('section:focusin')();
+  scrollOffset = 11 * 280;
+  events.get('track:scroll')();
   events.get('toggle:click')();
   assert.equal(nodes['[data-carousel-counter]'].textContent, '1 / 12', 'restart returns to the first example');
+  assert.equal(scrollRequests.at(-1).behavior, 'auto', 'restart avoids traversing intermediate cards');
+  events.get('track:scroll')();
+  assert.equal(nodes['[data-carousel-counter]'].textContent, '1 / 12', 'restart transition stays at the first example');
+  assert.equal(toggle.textContent, 'Pausar', 'restart transition keeps the active-play label');
   assert.equal(typeof timerCallback, 'function', 'restart begins autoplay again');
+  timerCallback();
+  assert.equal(nodes['[data-carousel-counter]'].textContent, '2 / 12', 'autoplay advances after restart despite retained hover and focus');
 });
 
 test('layers authentic local edition pages behind the existing book cover with responsive insets', () => {
