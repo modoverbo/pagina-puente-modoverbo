@@ -66,4 +66,5 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 ### T5 verification
 - RED observed before implementation: `node --test --test-name-pattern="layers authentic local edition pages"` failed because the book art had no preview-page layers.
 - GREEN: focused T5 test passed; final `node --test` — 18 passed, 0 failed; `node --check script.js` — passed; `git diff --check` — passed; ImageMagick decoded both copied 900×1200 WebP pages.
+- Asset regression checks skip only the optional ImageMagick decode assertion when `identify` is unavailable; local-path and file-existence checks always run. Test portability commit: `8e5ae35` (`test(assets): make WebP decoding check optional`).
 - Runtime/browser QA: not run by this worker; parent follow-up.
