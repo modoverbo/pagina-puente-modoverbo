@@ -72,7 +72,7 @@ a:focus-visible {
 
 .hero-portrait {
   position: absolute;
-  z-index: -2;
+  z-index: 0;
   top: 0;
   right: 1%;
   width: 55%;

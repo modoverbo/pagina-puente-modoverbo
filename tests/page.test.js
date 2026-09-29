@@ -69,6 +69,16 @@ test('makes Arturo brighter and more visually prominent without changing the pro
   assert.match(css, /h1\s*\{[^}]*font-size:[^}]*clamp\(/);
 });
 
+test('keeps Arturo above the hero overlays while the copy stays in front', () => {
+  const css = read('styles.css');
+  const zIndex = (selector) => Number(css.match(new RegExp(`${selector}[^}]*z-index:\\s*(-?\\d+)`))[1]);
+
+  assert.ok(zIndex('\\.hero-portrait') > zIndex('\\.hero::before'));
+  assert.ok(zIndex('\\.hero-portrait') > zIndex('\\.hero-glow'));
+  assert.ok(zIndex('\\.hero-copy') > zIndex('\\.hero-portrait'));
+  assert.match(css, /\.hero\s*\{[^}]*background:\s*linear-gradient\(/);
+});
+
 test('uses genuine local resource-page captures instead of CSS-drawn paper and phone art', () => {
   const html = read('index.html');
   const captures = [...html.matchAll(/<img\b(?=[^>]*class="[^"]*\bresource-screenshot\b[^"]*")(?=[^>]*src="([^"]+)")[^>]*>/g)];
