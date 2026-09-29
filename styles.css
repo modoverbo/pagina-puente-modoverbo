@@ -148,6 +148,10 @@ h2 span { color: var(--gold); }
 .book-art { position: absolute; top: 0; right: 4%; display: grid; width: 41%; height: 100%; padding: 18px; place-items: center; }
 .book-art::before { position: absolute; right: -5%; bottom: -32px; width: 90%; height: 180px; border-radius: 50%; background: rgba(246, 202, 50, .21); filter: blur(54px); content: ""; }
 .book-art img { position: relative; z-index: 1; width: auto; max-width: 88%; height: min(252px, 100%); border-radius: 3px; box-shadow: 12px 20px 36px rgba(0,0,0,.65), 2px 0 0 rgba(255,255,255,.15); object-fit: contain; transform: perspective(850px) rotateY(-8deg) rotateZ(1deg); }
+.book-art img.book-preview-page { position: absolute; z-index: 1; width: 74%; max-width: none; height: auto; max-height: 78%; border-radius: 2px; opacity: .88; object-fit: cover; box-shadow: 6px 12px 22px rgba(0,0,0,.58); }
+.book-art img.book-preview-page--left { top: 15%; left: 9%; transform: rotate(-11deg); }
+.book-art img.book-preview-page--right { top: 21%; right: 9%; transform: rotate(10deg); }
+.book-art img.book-cover { z-index: 3; }
 
 .testimonials { margin-top: 28px; padding: 28px 0 10px; border-top: 1px solid var(--line); }
 .testimonials-heading { max-width: 620px; margin-bottom: 17px; }

@@ -466,3 +466,27 @@ test('allows explicit resume while the toggle retains focus and offers restart a
   assert.equal(nodes['[data-carousel-counter]'].textContent, '1 / 12', 'restart returns to the first example');
   assert.equal(typeof timerCallback, 'function', 'restart begins autoplay again');
 });
+
+test('layers authentic local edition pages behind the existing book cover with responsive insets', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+  const bookArt = html.match(/<div class="book-art">([\s\S]*?)<\/div>/)?.[1] ?? '';
+  const pages = [...bookArt.matchAll(/<img\b(?=[^>]*class="book-preview-page book-preview-page--(left|right)")(?=[^>]*src="([^"]+)")(?=[^>]*alt="")[^>]*>/g)];
+
+  assert.equal(pages.length, 2, 'two genuine edition pages should layer with the cover');
+  assert.ok(bookArt.indexOf('book-preview-page--left') < bookArt.indexOf('book-cover'));
+  assert.ok(bookArt.indexOf('book-preview-page--right') < bookArt.indexOf('book-cover'));
+  assert.match(bookArt, /class="book-cover"[^>]*src="assets\/elocuencia-sin-miedo-cover\.webp"/);
+  for (const [, , imagePath] of pages) {
+    assert.match(imagePath, /^assets\/edition\/page-0[23]\.webp$/);
+    const absolutePath = path.join(root, imagePath);
+    assert.ok(fs.existsSync(absolutePath), `${imagePath} should be copied locally`);
+    assert.equal(require('node:child_process').spawnSync('identify', ['-format', '%m', absolutePath]).status, 0, `${imagePath} should decode`);
+  }
+
+  assert.match(css, /\.book-art img\.book-preview-page\s*\{[^}]*position:\s*absolute[^}]*z-index:\s*1/);
+  assert.match(css, /\.book-art img\.book-cover\s*\{[^}]*z-index:\s*3/);
+  assert.match(css, /\.book-preview-page--left\s*\{[^}]*left:\s*\d+%/);
+  assert.match(css, /\.book-preview-page--right\s*\{[^}]*right:\s*\d+%/);
+  assert.match(css, /\.book-art\s*\{[^}]*padding:\s*\d+px/);
+});
