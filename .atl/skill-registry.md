@@ -6,8 +6,16 @@ Last updated: 2026-09-29
 
 ## Sources scanned
 
+- skills
+- /home/julian/.pi/agent/skills
+- /home/julian/.agents/skills
 - /home/julian/.claude/skills
 - /home/julian/.codex/skills
+- /home/julian/.codeium/windsurf/skills
+- /home/julian/.qwen/skills
+- /home/julian/.kiro/skills
+- /home/julian/.openclaw/skills
+- /home/julian/.hermes/skills
 
 ## Contract
 
@@ -19,12 +27,36 @@ Last updated: 2026-09-29
 
 | Skill | Trigger / description | Scope | Path |
 | --- | --- | --- | --- |
+| `accessibility` | Accesibilidad (a11y): WCAG, semántica, teclado, ARIA, contraste, lectores de pantalla. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/accessibility/SKILL.md` |
+| `api-design` | Diseño de APIs y endpoints: REST, versionado, errores, paginación, idempotencia, contratos. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/api-design/SKILL.md` |
+| `backendless-apps` | Disparador: sin backend, BaaS, PWA, Supabase, RLS, edge function. Diseña validaciones seguras sin servidor dedicado. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/backendless-apps/SKILL.md` |
 | `chained-pr` | Trigger: PRs over 400 lines, stacked PRs, review slices. Split oversized changes into chained PRs that protect review focus. | user | `/home/julian/.claude/skills/chained-pr/SKILL.md` |
+| `code-review` | Revisión de código: qué mirar, tamaño de PR, feedback con criterio, checklist de revisor. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/code-review/SKILL.md` |
 | `cognitive-doc-design` | Design docs that reduce cognitive load. Trigger: writing guides, READMEs, RFCs, onboarding, architecture, or review-facing docs. | user | `/home/julian/.claude/skills/cognitive-doc-design/SKILL.md` |
+| `database-design` | Modelado de datos: normalización, índices, transacciones, migraciones, N+1, integridad. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/database-design/SKILL.md` |
+| `deployment-strategy` | Disparador: despliegue, hosting, Vercel, Netlify, Cloudflare, cuota, migración. Elige y opera plataformas con coste controlado. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/deployment-strategy/SKILL.md` |
+| `design-patterns` | Disparador: patrón de diseño, GoF, integración, resiliencia, sistema distribuido. Selecciona patrones por problema y coste. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/design-patterns/SKILL.md` |
+| `design-system` | Disparador: sistema de diseño, tokens, componentes, temas, variantes. Construye consistencia visual escalable. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/design-system/SKILL.md` |
+| `error-handling-observability` | Manejo de errores, logging estructurado, métricas, trazas, alertas y resiliencia. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/error-handling-observability/SKILL.md` |
+| `find-skills` | Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill. | user | `/home/julian/.pi/agent/skills/find-skills/SKILL.md` |
+| `free-first-architecture` | Disparador: coste, hosting, backend, proveedor, free tier. Decide infraestructura con estrategia gratuita obligatoria. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/free-first-architecture/SKILL.md` |
+| `frontend-architecture` | Arquitectura frontend: componentes, composición, límites, estructura de carpetas, rendimiento. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/frontend-architecture/SKILL.md` |
+| `git-workflow` | Flujo con Git: ramas, commits atómicos, Conventional Commits, PRs, rebase vs merge. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/git-workflow/SKILL.md` |
 | `go-testing` | Trigger: Go tests, go test coverage, Bubbletea teatest, golden files. Apply focused Go testing patterns. | user | `/home/julian/.claude/skills/go-testing/SKILL.md` |
 | `judgment-day` | Trigger: judgment day, dual review, adversarial review, juzgar. Run explicit blind dual review with at most two scoped fix/re-judgment rounds. | user | `/home/julian/.claude/skills/judgment-day/SKILL.md` |
+| `motion-design` | Disparador: animación, transición, microinteracción, efecto visual. Diseña movimiento útil, accesible y eficiente. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/motion-design/SKILL.md` |
+| `performance` | Rendimiento: medir antes de optimizar, caché, Big-O, concurrencia, lazy loading, presupuestos. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/performance/SKILL.md` |
+| `product-discovery` | Disparador: MVP, hipótesis, validación, experimento, métrica. Reduce alcance para aprender antes de construir. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/product-discovery/SKILL.md` |
+| `refactoring` | Refactorización y deuda técnica: cuándo, técnicas seguras, code smells, red-green-refactor. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/refactoring/SKILL.md` |
+| `security` | Seguridad aplicada: OWASP, autenticación/autorización, secretos, validación, defensa en profundidad. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/security/SKILL.md` |
 | `skill-creator` | Trigger: new skills, agent instructions, documenting AI usage patterns. Create LLM-first skills with valid frontmatter. | user | `/home/julian/.claude/skills/skill-creator/SKILL.md` |
 | `skill-improver` | Trigger: improve skills, audit skills, refactor skills, skill quality. Audit and upgrade existing LLM-first skills. | user | `/home/julian/.claude/skills/skill-improver/SKILL.md` |
+| `software-architecture` | Disparador: arquitectura de software, Clean Architecture, Hexagonal, límites, ADR. Diseña dependencias y módulos mantenibles. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/software-architecture/SKILL.md` |
+| `state-management` | Gestión de estado: local vs global, server state, inmutabilidad, patrones y anti-patrones. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/state-management/SKILL.md` |
+| `testing` | Estrategia de tests: pirámide, TDD, unit/integration/e2e, dobles, cobertura con valor. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/testing/SKILL.md` |
+| `ui-design` | Diseño de interfaces: sistemas de diseño, tipografía, color, espaciado, consistencia visual. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/ui-design/SKILL.md` |
+| `ux-design` | Experiencia de usuario: heurísticas de usabilidad, flujos, formularios, feedback, jerarquía. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/ux-design/SKILL.md` |
+| `visual-quality` | Disparador: revisión visual, responsive, regresión visual, interfaz bonita. Verifica jerarquía, estados y consistencia. | project | `/home/julian/proyectos/modoverbo/pagina-puente-modoverbo/skills/visual-quality/SKILL.md` |
 | `work-unit-commits` | Plan commits as reviewable work units. Trigger: implementation, commit splitting, chained PRs, or keeping tests and docs with code. | user | `/home/julian/.claude/skills/work-unit-commits/SKILL.md` |
 
 ## Loading protocol
