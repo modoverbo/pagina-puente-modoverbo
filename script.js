@@ -54,7 +54,8 @@
       pauseAutoplay();
     } else if (timer === null) {
       timer = setInterval(() => {
-        goTo((activeIndex + 1) % cards.length);
+        const nextIndex = (activeIndex + 1) % cards.length;
+        goTo(nextIndex, nextIndex === 0);
       }, 6000);
     }
   };

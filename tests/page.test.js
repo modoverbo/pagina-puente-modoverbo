@@ -199,6 +199,7 @@ test('autoplay runs only while visible, pauses on interaction, and loops from th
   let timerDelay;
   let intersectionCallback;
   let activeScroll;
+  const scrollRequests = [];
   const cards = Array.from({ length: 12 }, (_, index) => ({
     offsetLeft: index * 280,
     clientWidth: 250,
@@ -214,7 +215,7 @@ test('autoplay runs only while visible, pauses on interaction, and loops from th
     addEventListener(event, callback) { events.set(`track:${event}`, callback); },
     getBoundingClientRect() { return { left: 0 }; },
     querySelectorAll() { return cards; },
-    scrollTo(options) { activeScroll = options.left; },
+    scrollTo(options) { activeScroll = options.left; scrollRequests.push(options); },
   };
   const section = {
     addEventListener(event, callback) { events.set(`section:${event}`, callback); },
@@ -287,6 +288,8 @@ test('autoplay runs only while visible, pauses on interaction, and loops from th
   assert.ok(activeScroll > 0, 'autoplay reaches the last card');
   timerCallback();
   assert.equal(activeScroll, 0, 'the next automatic movement wraps directly to the first card');
+  assert.equal(scrollRequests.at(-1).behavior, 'auto', 'wrap must jump to the first card without reverse-traversing the track');
+  assert.equal(nodes['[data-carousel-next]'].disabled, false, 'the first card remains the active destination after wrapping');
   assert.equal(typeof timerCallback, 'function', 'autoplay continues after wrapping');
   assert.equal(toggle.attributes['aria-label'], 'Pausar reproducción automática');
 });
