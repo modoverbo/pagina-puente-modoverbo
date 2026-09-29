@@ -54,7 +54,7 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - Effective TDD: enabled; exact runner `node --test`. Every behavior change requires observed RED before implementation and GREEN after.
 - `skill_resolution`: loaded `work-unit-commits`, `superpowers:test-driven-development`, `superpowers:systematic-debugging`, and `superpowers:verification-before-completion` from the supplied registry-resolved paths.
 - Acceptance/checks: autoplay continues while Resume remains focused and can restart at the end; touch-first swipe UX uses native scrolling and has a visible cue while preserving keyboard/reduced-motion support; testimonial `<img>` paths are local, exist, and decode; 2–3 genuine edition preview pages appear behind the cover with responsive inset margins; fictional disclaimer and all CTAs stay unchanged; `node --test`, `node --check script.js`, `git diff --check`, local-image/path validation and WebP decoding where available.
-- Browser runtime QA is a parent follow-up; do not claim it was run here.
+- Browser runtime QA was completed by the parent after the corrective commits; worker-only checks below remain historical evidence.
 - [x] **T4 — Fix carousel autoplay/resume and touch-first swipe UX (restart race corrected).** Restart now returns to card 1 with immediate scrolling, preventing intermediate scroll events from restoring the end state; the regression test verifies card 1, Pause label, a live timer, advancement despite retained hover/focus, and continued passive hover/focus pauses. Route: delegated direct, focused correction. Corrective commit: `b7c901750549ac61568b0327250e65545beed20d` (`fix(carousel): restart immediately at first card`), following previous correction `888999ae709f2489817fab3632b16f022731720d`.
 - [x] **T5 — Add authentic inset book preview pages (responsive correction completed).** Added a narrow-screen override moving the right preview sheet's inset from 9% to 18%; the focused layout assertion locks that mobile rule while keeping the unchanged cover in front. This shifts the sheet inward by 9% of its containing width; parent browser measurement after the correction remains the final pixel-level confirmation. Corrective commit: `888999ae709f2489817fab3632b16f022731720d`, following original commit `1f6c1387a97753a51b1de325ecb46837fe91e967`.
 
@@ -62,6 +62,7 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - RED observed before implementation: `node --test` failed the new swipe-cue assertion (missing cue) and explicit-resume assertion (timer remained paused by focus). The portrait-locality/decode test passed for all 12.
 - GREEN: `node --test` — 17 passed, 0 failed; `node --check script.js` — passed; `git diff --check` — passed.
 - Runtime/browser QA: not run by this worker; parent follow-up.
+
 - Reopen reason: parent browser QA observed that after pausing and resuming at 390px, pointer hover and keyboard focus remain active; clearing only `hasFocus` leaves `isHovered` blocking autoplay. Corrective test observed RED with the timer still stopped, then GREEN after Resume clears both transient pause flags.
 - Additional T5 reopen reason: parent browser QA measured the genuine right preview at x=303.97px against a 309px card edge at 320px viewport (about 5px inset). The correction increases the mobile right inset to 18%, with a focused test asserting that responsive override.
 - Corrective checks: `node --test` — 18 passed, 0 failed; `node --check script.js` — passed; `git diff --check` — passed. No post-correction browser measurement was run by this worker.
@@ -73,3 +74,11 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - GREEN: focused T5 test passed; final `node --test` — 18 passed, 0 failed; `node --check script.js` — passed; `git diff --check` — passed; ImageMagick decoded both copied 900×1200 WebP pages.
 - Asset regression checks skip only the optional ImageMagick decode assertion when `identify` is unavailable; local-path and file-existence checks always run. Test portability commit: `8e5ae35` (`test(assets): make WebP decoding check optional`).
 - Runtime/browser QA: not run by this worker; parent follow-up.
+
+### Final parent browser QA
+- At 320px, the right book preview stays about 14.9px inside the card border, the authentic cover remains in front, and the page has no horizontal overflow.
+- At 390px, Pause then Resume advanced the counter from 2/12 to 3/12 after 6.5 seconds while the button retained focus and the pointer remained over the carousel.
+- At 390px, Restart from 12/12 returned immediately to 1/12 with a Pause label, then advanced to 2/12 after 6.5 seconds.
+- Native horizontal track scrolling reached 12/12; all 12 testimonial portraits reported nonzero natural width once visited, with no broken image.
+- At 1024px, the book preview pages remain at least 27px inside the card's right border, and there is no horizontal page overflow.
+- Independent read-only verification passed `node --test` (18/18), `node --check script.js`, and `git diff --check main...HEAD`; both edition previews decoded and returned HTTP 200 locally. No deployment, push, or PR was performed.
