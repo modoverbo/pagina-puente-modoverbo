@@ -93,12 +93,16 @@
     if (autoplayFinished) {
       autoplayFinished = false;
       userPaused = false;
+      isHovered = false;
       hasFocus = false;
       goTo(0);
       return;
     }
     userPaused = !userPaused;
-    if (!userPaused) hasFocus = false;
+    if (!userPaused) {
+      isHovered = false;
+      hasFocus = false;
+    }
     refreshAutoplay();
   });
 

@@ -400,7 +400,7 @@ test('shows a native-scroll swipe cue for touch-first testimonial navigation', (
   assert.match(css, /\.testimonial-track\s*\{[^}]*scroll-snap-type:\s*x\s*mandatory/);
 });
 
-test('allows explicit resume while the toggle retains focus and offers restart after autoplay completes', () => {
+test('allows explicit resume while the pointer hovers and the toggle retains focus', () => {
   const script = read('script.js');
   const events = new Map();
   let timerCallback = null;
@@ -460,8 +460,22 @@ test('allows explicit resume while the toggle retains focus and offers restart a
   events.get('toggle:click')();
   assert.equal(timerCallback, null, 'pause click stops autoplay');
   events.get('section:focusin')();
+  events.get('section:mouseenter')();
   events.get('toggle:click')();
-  assert.equal(typeof timerCallback, 'function', 'explicit resume must override retained focus');
+  assert.equal(typeof timerCallback, 'function', 'explicit resume must override retained hover and focus');
+
+  events.get('section:mouseleave')();
+  assert.equal(typeof timerCallback, 'function', 'passive hover exit does not cancel an explicit resume');
+  events.get('section:focusout')({ relatedTarget: null });
+  assert.equal(typeof timerCallback, 'function', 'focus exit does not cancel an explicit resume');
+  events.get('section:mouseenter')();
+  assert.equal(timerCallback, null, 'a new passive hover still pauses autoplay');
+  events.get('section:mouseleave')();
+  assert.equal(typeof timerCallback, 'function', 'leaving a later hover resumes autoplay');
+  events.get('section:focusin')();
+  assert.equal(timerCallback, null, 'a new passive focus still pauses autoplay');
+  events.get('section:focusout')({ relatedTarget: null });
+  assert.equal(typeof timerCallback, 'function', 'leaving a later focus resumes autoplay');
 
   for (let index = 0; index < 11; index += 1) timerCallback();
   assert.equal(toggle.disabled, false, 'completed autoplay remains restartable');
@@ -495,4 +509,6 @@ test('layers authentic local edition pages behind the existing book cover with r
   assert.match(css, /\.book-preview-page--left\s*\{[^}]*left:\s*\d+%/);
   assert.match(css, /\.book-preview-page--right\s*\{[^}]*right:\s*\d+%/);
   assert.match(css, /\.book-art\s*\{[^}]*padding:\s*\d+px/);
+  const mobileRules = css.split('@media (max-width: 520px)')[1].split('@media (max-width: 360px)')[0];
+  assert.match(mobileRules, /\.book-art img\.book-preview-page--right\s*\{[^}]*right:\s*18%/);
 });

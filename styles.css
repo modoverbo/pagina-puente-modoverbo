@@ -224,6 +224,7 @@ h2 span { color: var(--gold); }
   .book-card .offer-copy { width: 57%; }
   .book-art { top: auto; right: 1%; bottom: 0; width: 38%; height: 83%; padding: 13px; }
   .book-art img { width: 100%; max-width: 150px; height: auto; object-fit: contain; }
+  .book-art img.book-preview-page--right { right: 18%; }
   .testimonials { margin-top: 22px; }
   .testimonial-track { grid-auto-columns: 100%; scrollbar-width: none; }
   .testimonial-track::-webkit-scrollbar { display: none; }
