@@ -15,7 +15,7 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - No backend, forms, analytics, or framework dependencies.
 - Effective TDD: enabled by session instructions; runner: `node --test`.
 - Route: delegated direct. Evidence: a new multi-file page requires asset selection, HTML/CSS, tests, and visual verification.
-- Delivery strategy: local work-unit commit on `feat/visual-testimonials-qa`; no push or PR authorized. The additional authored diff is about 500 lines, primarily carousel behavior and regression tests, so it remains one cohesive local correction pending any separate PR-size decision.
+- Prior delivery strategy: local work-unit commits on `feat/visual-testimonials-qa`; this approved follow-up uses `feat/bridge-mobile-final-ux`. No push, deploy, or PR authorized.
 
 ## Checklist
 - [x] **T1 — Publish the bridge page.** Wrote failing tests for structure, exact destinations, and local assets; built the semantic HTML/CSS page; copied the supplied portrait and authentic cover; verified mobile and desktop layouts. Work-unit commit: `ef28cb2`.
@@ -31,6 +31,7 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - Layout works on narrow mobile screens and wider desktop screens without horizontal overflow.
 - Arturo is visibly brighter and closer, with no text covering his face; resource and book art maintain interior margins at narrow widths.
 - Resource imagery is captured from the real live resource page, while the book uses the authentic existing cover.
+- The book card layers two genuine edition preview pages behind the real cover without obscuring the title or leaving the card's safe margins.
 - Twelve fictional examples are navigable in a responsive carousel; the section clearly labels both text and portraits as fictitious, without implying actual customer endorsements.
 
 ## Checks and progress
@@ -45,7 +46,7 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - Independent code review found and verified correction of the track-relative carousel scroll bug and missing persistent pause control. Real desktop navigation advanced to the intended third card; no page scroll jump was observed.
 - Eight new portraits were generated and optimized to 320px WebP files of 10–21KB each; exact generation prompts and source provenance for the four reused fictional portraits are in `assets/testimonials/PROVENANCE.md`.
 - The bridge folder is itself a nested Git repository, distinct from the parent `modoverbo` Git repository. Delivery commits for this follow-up belong on the bridge feature branch; prior parent-root Git references above document historical work only.
-- Next: local work-unit commit `49f6fa7` recorded. No push or PR requested.
+- Prior local work-unit commit `49f6fa7` recorded. This follow-up's local work-unit commits are `e4e5c1b` and `1f6c138`; no push, deploy, or PR requested.
 
 ## Approved mobile-final follow-up
 - Authorized branch: `feat/bridge-mobile-final-ux`; sibling repositories are read-only asset sources. Do not push, deploy, or open a PR.
@@ -55,9 +56,14 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - Acceptance/checks: autoplay continues while Resume remains focused and can restart at the end; touch-first swipe UX uses native scrolling and has a visible cue while preserving keyboard/reduced-motion support; testimonial `<img>` paths are local, exist, and decode; 2–3 genuine edition preview pages appear behind the cover with responsive inset margins; fictional disclaimer and all CTAs stay unchanged; `node --test`, `node --check script.js`, `git diff --check`, local-image/path validation and WebP decoding where available.
 - Browser runtime QA is a parent follow-up; do not claim it was run here.
 - [x] **T4 — Fix carousel autoplay/resume and touch-first swipe UX.** Added regression tests first; explicit Resume clears the retained focus pause; completion now offers an enabled Restart control that returns to the first card; native horizontal scrolling remains in place with a visible swipe cue; keyboard and reduced-motion paths remain covered; all 12 testimonial image references were validated local, present, and decodable. Route: delegated direct; trigger: behavior and regression tests span JS/CSS/test files. Commit: `e4e5c1bec26ac2f7255b3970f1050a546863abca` (`fix(carousel): make autoplay resumable and add swipe cue`).
-- [ ] **T5 — Add authentic inset book preview pages.** Copy 2–3 genuine `edition/page-*.webp` assets from the read-only sibling source and layer them behind the real cover with responsive safe margins; test local asset references and maintain existing cover/CTA/disclaimer. Route: delegated direct; trigger: asset, markup, style, and test changes are non-trivial. Commit: pending.
+- [x] **T5 — Add authentic inset book preview pages.** Copied genuine edition pages 02 and 03 from the read-only sibling source and layered them behind the unchanged authentic cover with responsive inset positions; local file existence and WebP decoding are tested, while the existing book CTA and fictional disclosure remain unchanged. Route: delegated direct; trigger: asset, markup, style, and test changes are non-trivial. Commit: `1f6c1387a97753a51b1de325ecb46837fe91e967` (`feat(book-preview): layer authentic edition pages`).
 
 ### T4 verification
 - RED observed before implementation: `node --test` failed the new swipe-cue assertion (missing cue) and explicit-resume assertion (timer remained paused by focus). The portrait-locality/decode test passed for all 12.
 - GREEN: `node --test` — 17 passed, 0 failed; `node --check script.js` — passed; `git diff --check` — passed.
+- Runtime/browser QA: not run by this worker; parent follow-up.
+
+### T5 verification
+- RED observed before implementation: `node --test --test-name-pattern="layers authentic local edition pages"` failed because the book art had no preview-page layers.
+- GREEN: focused T5 test passed; final `node --test` — 18 passed, 0 failed; `node --check script.js` — passed; `git diff --check` — passed; ImageMagick decoded both copied 900×1200 WebP pages.
 - Runtime/browser QA: not run by this worker; parent follow-up.
