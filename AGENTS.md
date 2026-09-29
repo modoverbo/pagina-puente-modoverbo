@@ -464,7 +464,7 @@ datos o un servidor, la arquitectura está mal.
 - **Estilo:** define lenguaje, formateador y linter obligatorios (se corre en CI).
 - **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) — `type(scope): description`
   (`feat`, `fix`, `docs`, `refactor`, `test`, `chore`…). Sin atribución de IA en los commits.
-- **Ramas y PRs:** una unidad de trabajo revisable por PR; PRs pequeños (< ~400 líneas). Ver skill `code-review`.
+- **Ramas y PRs:** comitear directamente en `main`. No crear ramas salvo solicitud explícita del usuario. Mantener commits atómicos; si se solicita un PR, hacerlo pequeño (< ~400 líneas). Ver skill `code-review`.
 - **Tests:** todo cambio de comportamiento va con test. No se baja cobertura de lógica de dominio.
 - **Seguridad:** nunca commitear secretos; validar toda entrada externa. Ver skill `security`.
 
