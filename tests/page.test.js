@@ -37,6 +37,18 @@ test('uses local supplied portrait and authentic titled book cover', () => {
   assert.ok(fs.statSync(cover).size > 10_000, 'book cover asset should be copied locally');
 });
 
+test('ships an original local Modo Verbo SVG favicon linked from the document head', () => {
+  const html = read('index.html');
+  const iconPath = 'assets/modo-verbo-icon.svg';
+  assert.ok(fs.existsSync(path.join(root, iconPath)), 'the Modo Verbo favicon should exist locally');
+  const icon = read(iconPath);
+
+  assert.match(html, /<link rel="icon" type="image\/svg\+xml" href="assets\/modo-verbo-icon\.svg"/);
+  assert.match(icon, /<svg[^>]*viewBox="0 0 64 64"/);
+  assert.match(icon, /<path[^>]*fill="#f6ca32"/i);
+  assert.match(icon, /<svg[^>]*xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
+});
+
 test('keeps a centered, responsive layout, visible keyboard focus, and reduced motion', () => {
   const css = read('styles.css');
 
