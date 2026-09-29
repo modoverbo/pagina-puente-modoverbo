@@ -28,10 +28,11 @@ test('offers the two exact external destinations with visible action labels', ()
 
 test('uses local supplied portrait and authentic titled book cover', () => {
   const html = read('index.html');
-  const portrait = path.join(root, 'assets', 'arturo-valdes.png');
+  const portrait = path.join(root, 'assets', 'arturo-valdes.webp');
   const cover = path.join(root, 'assets', 'elocuencia-sin-miedo-cover.webp');
 
-  assert.match(html, /src="assets\/arturo-valdes\.png"[^>]*alt="[^"]+"/i);
+  assert.match(html, /<link rel="preload" as="image" href="assets\/arturo-valdes\.webp">/i);
+  assert.match(html, /<img\b(?=[^>]*class="hero-portrait")(?=[^>]*src="assets\/arturo-valdes\.webp")(?=[^>]*width="940" height="1672")(?=[^>]*alt="[^"]+")[^>]*>/i);
   assert.match(html, /src="assets\/elocuencia-sin-miedo-cover\.webp"[^>]*alt="[^"]+"/i);
   assert.ok(fs.statSync(portrait).size > 10_000, 'portrait asset should be copied locally');
   assert.ok(fs.statSync(cover).size > 10_000, 'book cover asset should be copied locally');
