@@ -79,7 +79,8 @@ a:focus-visible {
   height: 100%;
   object-fit: cover;
   object-position: 50% 27%;
-  opacity: .9;
+  opacity: 1;
+  filter: brightness(1.12) contrast(1.03);
   mask-image: linear-gradient(90deg, transparent, #000 28%, #000 88%, transparent);
 }
 
@@ -139,24 +140,35 @@ h2 span { color: var(--gold); }
 
 .resource-art { position: absolute; top: 0; right: 1%; width: 49%; height: 100%; }
 .resource-art::before { position: absolute; right: 7%; bottom: -50px; width: 240px; height: 210px; border-radius: 50%; background: rgba(246, 202, 50, .22); filter: blur(55px); content: ""; }
-.resource-sheet { position: absolute; top: 35px; right: 10%; display: flex; width: 34%; height: 197px; flex-direction: column; gap: 14px; padding: 17px 12px; border-radius: 5px; background: #f4eedf; box-shadow: 0 8px 22px rgba(0,0,0,.4); color: #24231f; transform: rotate(11deg); }
-.resource-sheet span { font-size: .44rem; font-weight: 800; letter-spacing: .1em; }
-.resource-sheet b { font-family: Georgia, serif; font-size: .9rem; line-height: 1; }
-.resource-sheet i { display: block; width: 68%; height: 45px; margin-top: auto; border-radius: 50%; background: repeating-linear-gradient(90deg, #d7a526 0 2px, transparent 2px 6px); }
-.sheet-front { z-index: 1; right: 35%; top: 47px; height: 185px; transform: rotate(-8deg); }
-.phone { position: absolute; z-index: 2; top: 58px; right: 9%; display: flex; width: 28%; min-width: 78px; height: 202px; flex-direction: column; align-items: center; padding: 27px 9px 12px; border: 5px solid #333; border-radius: 22px; background: linear-gradient(160deg, #171714, #050505); box-shadow: 0 12px 28px rgba(0,0,0,.6); }
-.phone-camera { position: absolute; top: 8px; width: 28px; height: 5px; border-radius: 5px; background: #444; }
-.phone-brand { margin: 10px 0 20px; font-size: .5rem; line-height: 1; text-align: center; }
-.phone-brand b { color: var(--gold); }
-.sound-bars { display: flex; height: 30px; align-items: center; gap: 3px; }
-.sound-bars i { width: 3px; height: 12px; border-radius: 2px; background: var(--gold); }
-.sound-bars i:nth-child(2), .sound-bars i:nth-child(4) { height: 22px; }
-.sound-bars i:nth-child(3) { height: 29px; }
-.phone small { margin-top: 16px; color: #ccc; font-size: .39rem; }
+.resource-screenshot { position: absolute; z-index: 1; width: 62%; height: auto; border: 1px solid rgba(255,255,255,.25); border-radius: 7px; box-shadow: 0 15px 32px rgba(0,0,0,.58); }
+.screenshot-diagnostico { top: 17%; right: 2%; width: 61%; transform: rotate(5deg); }
+.screenshot-frases { top: 33%; left: 0; width: 61%; transform: rotate(-7deg); }
+.screenshot-trabalenguas { z-index: 2; top: 51%; right: 8%; width: 59%; transform: rotate(2deg); }
 
-.book-art { position: absolute; top: 0; right: 4%; display: grid; width: 41%; height: 100%; place-items: center; }
+.book-art { position: absolute; top: 0; right: 4%; display: grid; width: 41%; height: 100%; padding: 18px; place-items: center; }
 .book-art::before { position: absolute; right: -5%; bottom: -32px; width: 90%; height: 180px; border-radius: 50%; background: rgba(246, 202, 50, .21); filter: blur(54px); content: ""; }
-.book-art img { position: relative; z-index: 1; width: auto; max-width: 76%; height: 252px; border-radius: 3px; box-shadow: 12px 20px 36px rgba(0,0,0,.65), 2px 0 0 rgba(255,255,255,.15); object-fit: cover; transform: perspective(850px) rotateY(-8deg) rotateZ(1deg); }
+.book-art img { position: relative; z-index: 1; width: auto; max-width: 88%; height: min(252px, 100%); border-radius: 3px; box-shadow: 12px 20px 36px rgba(0,0,0,.65), 2px 0 0 rgba(255,255,255,.15); object-fit: contain; transform: perspective(850px) rotateY(-8deg) rotateZ(1deg); }
+
+.testimonials { margin-top: 28px; padding: 28px 0 10px; border-top: 1px solid var(--line); }
+.testimonials-heading { max-width: 620px; margin-bottom: 17px; }
+.testimonials-heading .eyebrow { margin-bottom: 9px; }
+.testimonials-heading h2 { margin-bottom: 10px; font-size: clamp(1.7rem, 5vw, 2.35rem); }
+.testimonials-heading h2 span { color: var(--gold); }
+.testimonial-disclosure { max-width: 650px; margin: 0; color: #aaa69d; font-size: .78rem; line-height: 1.5; }
+.carousel-controls { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin: 0 0 12px; }
+.carousel-button { display: grid; width: 39px; height: 39px; place-items: center; border: 1px solid var(--gold); border-radius: 50%; background: transparent; color: var(--gold); font: inherit; font-size: 1.15rem; cursor: pointer; }
+.carousel-button:disabled { opacity: .42; cursor: default; }
+.carousel-toggle { min-height: 39px; padding: 0 13px; border: 1px solid var(--gold); border-radius: 999px; background: transparent; color: var(--gold); font: inherit; font-size: .68rem; font-weight: 750; cursor: pointer; }
+.carousel-toggle:disabled { opacity: .55; cursor: default; }
+.carousel-button:focus-visible, .carousel-toggle:focus-visible, .testimonial-track:focus-visible { outline: 3px solid var(--paper); outline-offset: 4px; }
+.carousel-counter { min-width: 45px; color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; text-align: center; }
+.testimonial-track { display: grid; grid-auto-columns: minmax(260px, 1fr); grid-auto-flow: column; gap: 13px; overflow-x: auto; padding: 5px 3px 15px; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-color: rgba(246,202,50,.55) #171714; scrollbar-width: thin; }
+.testimonial-card { display: flex; min-height: 245px; flex-direction: column; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg, #151513, #0e0e0d); scroll-snap-align: center; }
+.testimonial-person { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.testimonial-avatar { width: 58px; height: 58px; flex: 0 0 58px; border: 1px solid rgba(246,202,50,.65); border-radius: 50%; object-fit: cover; }
+.testimonial-person h3 { margin: 0 0 4px; font-size: .9rem; }
+.testimonial-person p { margin: 0; color: var(--muted); font-size: .68rem; }
+.testimonial-card blockquote { margin: 0; color: #e3dfd6; font-size: .83rem; line-height: 1.55; }
 
 .site-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px; padding: 31px 0 24px; text-align: center; }
 .site-footer .brand-name { font-size: .95rem; }
@@ -168,12 +180,16 @@ h2 span { color: var(--gold); }
   .brand-lockup { margin-left: 8%; }
   .hero { min-height: 490px; margin-top: -39px; }
   .hero-copy { padding-top: 150px; }
-  .hero-portrait { right: 7%; width: 48%; object-position: 50% 23%; }
+  .hero-portrait { right: 3%; width: 55%; object-position: 50% 23%; }
   .offer-card { min-height: 305px; }
   .offer-copy { padding-left: 9%; }
-  .resource-art { right: 7%; width: 44%; }
-  .book-art { right: 8%; width: 37%; }
-  .book-art img { height: 270px; }
+  .resource-art { top: 12px; right: 12px; bottom: 12px; width: 44%; height: auto; }
+  .screenshot-diagnostico { top: 8%; right: 18px; width: 52%; transform: rotate(3deg); }
+  .screenshot-frases { top: 28%; left: 18px; width: 52%; transform: rotate(-4deg); }
+  .screenshot-trabalenguas { top: 44%; right: 18px; width: 50%; transform: rotate(1deg); }
+  .book-art { top: 12px; right: 12px; bottom: 12px; width: 37%; height: auto; padding: 20px; }
+  .book-art img { width: auto; max-width: 100%; max-height: none; height: 230px; }
+  .testimonial-track { grid-auto-columns: minmax(300px, calc(50% - 7px)); }
 }
 
 @media (max-width: 520px) {
@@ -181,11 +197,11 @@ h2 span { color: var(--gold); }
   .brand-lockup { margin-left: 5%; }
   .brand-name { font-size: 1rem; }
   .hero { min-height: 390px; margin-top: -28px; border-radius: 13px; }
-  .hero-portrait { right: -22%; width: 69%; object-position: 50% 24%; opacity: .78; }
+  .hero-portrait { right: -24%; width: 78%; object-position: 50% 24%; opacity: 1; }
   .hero::before { background: linear-gradient(90deg, var(--ink) 0, rgba(9,9,9,.96) 24%, rgba(9,9,9,.56) 57%, rgba(9,9,9,.08) 100%); }
   .hero-copy { padding: 138px 0 34px 7%; }
   .hero .eyebrow { max-width: 190px; font-size: .55rem; }
-  h1 { font-size: clamp(3.2rem, 15vw, 4.1rem); }
+  h1 { font-size: clamp(3.05rem, 14.3vw, 3.9rem); }
   .hero-promise { font-size: 1rem; }
   .offers { gap: 13px; }
   .offer-card { min-height: 322px; border-radius: 15px; }
@@ -195,18 +211,17 @@ h2 span { color: var(--gold); }
   h2 { font-size: clamp(1.48rem, 7.2vw, 1.92rem); }
   .offer-description { max-width: 205px; margin-bottom: 13px; font-size: .8rem; }
   .action-link { min-height: 40px; gap: 10px; padding: 0 14px; font-size: .61rem; }
-  .resource-art { top: auto; right: 0; bottom: -5px; width: 72%; height: 57%; }
-  .resource-sheet { top: 7px; right: 15%; width: 31%; height: 135px; padding: 12px 8px; gap: 9px; }
-  .resource-sheet span { font-size: .34rem; }
-  .resource-sheet b { font-size: .72rem; }
-  .resource-sheet i { height: 31px; }
-  .sheet-front { top: 19px; right: 39%; height: 126px; }
-  .phone { top: 23px; right: 10%; width: 28%; height: 160px; min-width: 68px; padding-top: 22px; border-width: 4px; border-radius: 18px; }
-  .phone-brand { margin: 8px 0 15px; font-size: .42rem; }
-  .phone small { margin-top: 10px; font-size: .34rem; }
+  .resources-card .offer-copy { width: 53%; }
+  .resource-art { top: auto; right: 12px; bottom: 12px; width: 52%; height: 54%; }
+  .screenshot-diagnostico { top: 4%; right: 12px; width: 60%; }
+  .screenshot-frases { top: 23%; left: 40px; width: 58%; }
+  .screenshot-trabalenguas { top: 39%; right: 12px; width: 56%; }
   .book-card .offer-copy { width: 57%; }
-  .book-art { top: auto; right: 1%; bottom: 0; width: 38%; height: 83%; }
+  .book-art { top: auto; right: 1%; bottom: 0; width: 38%; height: 83%; padding: 13px; }
   .book-art img { width: 100%; max-width: 150px; height: auto; object-fit: contain; }
+  .testimonials { margin-top: 22px; }
+  .testimonial-track { grid-auto-columns: 100%; scrollbar-width: none; }
+  .testimonial-track::-webkit-scrollbar { display: none; }
   .site-footer { gap: 11px; padding-top: 26px; }
 }
 
@@ -217,7 +232,8 @@ h2 span { color: var(--gold); }
   .offer-card { min-height: 335px; }
   .offer-copy { width: 68%; }
   .book-card .offer-copy { width: 54%; }
-  .book-art { right: 1%; width: 37%; }
+  .book-art { right: 1%; width: 37%; padding: 10px; }
+  .testimonial-track { grid-auto-columns: 100%; }
   .action-link { gap: 7px; padding-inline: 10px; font-size: .55rem; }
   .book-card .action-link { gap: 4px; padding-inline: 8px; font-size: .52rem; letter-spacing: .015em; white-space: nowrap; }
 }

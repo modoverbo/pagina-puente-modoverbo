@@ -15,12 +15,12 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - No backend, forms, analytics, or framework dependencies.
 - Effective TDD: enabled by session instructions; runner: `node --test`.
 - Route: delegated direct. Evidence: a new multi-file page requires asset selection, HTML/CSS, tests, and visual verification.
-- Delivery strategy: `ask-on-risk`; forecast about 350 authored lines excluding copied binary assets. No push or PR authorized.
+- Delivery strategy: local work-unit commit on `feat/visual-testimonials-qa`; no push or PR authorized. The additional authored diff is about 500 lines, primarily carousel behavior and regression tests, so it remains one cohesive local correction pending any separate PR-size decision.
 
 ## Checklist
 - [x] **T1 — Publish the bridge page.** Wrote failing tests for structure, exact destinations, and local assets; built the semantic HTML/CSS page; copied the supplied portrait and authentic cover; verified mobile and desktop layouts. Work-unit commit: `ef28cb2`.
-- [ ] **T2 — Refine hero and offer visuals.** Increase Arturo's visual prominence, slightly trim hero typography, replace drawn resource sheets with genuine screenshots of the resource landing, and improve the book mockup with safe inset spacing. Route: delegated direct; trigger: HTML/CSS/test/asset work spans multiple non-trivial files.
-- [ ] **T3 — Add visibly disclosed fictional testimonial carousel.** Reuse four demo testimonials, add eight distinctive fictional examples with realistic generated candid portraits, add keyboard/swipe/controls and reduced-motion behavior, and keep the disclosure visible and near the carousel. Route: delegated direct; trigger: HTML/CSS/JS/test/asset work spans multiple non-trivial files.
+- [x] **T2 — Refine hero and offer visuals.** Increased Arturo's mobile prominence and brightness without clipping his face, slightly trimmed hero typography, replaced drawn resource sheets with genuine captures, and inset the authentic book cover. Route: delegated direct; trigger: HTML/CSS/test/asset work spans multiple non-trivial files.
+- [x] **T3 — Add visibly disclosed fictional testimonial carousel.** Reused four demo examples, added eight varied fictional voices and candid generated portraits, and delivered a twelve-card carousel with swipe, arrows, keyboard support, safe autoplay, and a persistent pause control. Route: delegated direct; trigger: HTML/CSS/JS/test/asset work spans multiple non-trivial files.
 
 ## Acceptance criteria
 - The first screen names Arturo Valdés and communicates the Modo Verbo promise quickly.
@@ -40,5 +40,9 @@ Social visitors need a fast, recognizable destination instead of choosing betwee
 - Independent verification identified narrow-width overlaps; CSS corrections were rechecked in the browser.
 - A parent-root `node --test` run is not applicable: it discovers unrelated Deno tests in `flui/` and fails on `jsr:` imports. Run the check from `pagina-puente-modoverbo/`.
 - Native risk assessment was unassessable because unrelated sibling repositories are untracked under the parent Git root; RDD mode is off. Independent verifier and parent spot checks were used.
-- Next: no push or PR requested.
-- Follow-up pending: T2 and T3. Resource screenshots already captured from the live page in `/tmp/modoverbo-resource-{trabalenguas,frases,diagnostico}.png`; copy selected captures into workspace assets for the site.
+- Follow-up TDD: repeated RED→GREEN cycles for layout/assets, carousel interactions, autoplay/reduced motion, and track-relative scrolling. Final scoped `node --test`: 14 passed, 0 failed; `node --check script.js` and `git diff --check` passed.
+- Browser visual QA at 320, 390, 430, 768, and 1024px found no horizontal page overflow. At 320px, resource captures stay at least 22px from the card's right edge and 68px from its bottom; at 1024px, at least 27px right/45px bottom. The book cover is inset at least 13px right/34px bottom across the tested widths.
+- Independent code review found and verified correction of the track-relative carousel scroll bug and missing persistent pause control. Real desktop navigation advanced to the intended third card; no page scroll jump was observed.
+- Eight new portraits were generated and optimized to 320px WebP files of 10–21KB each; exact generation prompts and source provenance for the four reused fictional portraits are in `assets/testimonials/PROVENANCE.md`.
+- The bridge folder is itself a nested Git repository, distinct from the parent `modoverbo` Git repository. Delivery commits for this follow-up belong on the bridge feature branch; prior parent-root Git references above document historical work only.
+- Next: record the local work-unit commit identity. No push or PR requested.
