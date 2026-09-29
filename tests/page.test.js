@@ -371,3 +371,98 @@ test('ships generated portraits as small local WebP assets with prompt provenanc
   assert.match(provenance, /eight.*generated/i);
   assert.equal((provenance.match(/^- Prompt:/gm) ?? []).length, 8);
 });
+
+test('keeps every testimonial portrait local, present, and decodable', () => {
+  const html = read('index.html');
+  const imagePaths = [...html.matchAll(/class="testimonial-avatar"[^>]*src="([^"]+)"/g)]
+    .map((match) => match[1]);
+
+  assert.equal(imagePaths.length, 12);
+  for (const imagePath of imagePaths) {
+    assert.doesNotMatch(imagePath, /^(?:https?:)?\/\//, `${imagePath} should be served locally`);
+    const absolutePath = path.resolve(root, imagePath);
+    assert.ok(absolutePath.startsWith(`${root}${path.sep}`), `${imagePath} should stay inside the bridge project`);
+    assert.ok(fs.existsSync(absolutePath), `${imagePath} should exist on disk`);
+    assert.equal(require('node:child_process').spawnSync('identify', ['-format', '%m', absolutePath]).status, 0, `${imagePath} should decode`);
+  }
+});
+
+test('shows a native-scroll swipe cue for touch-first testimonial navigation', () => {
+  const html = read('index.html');
+  const css = read('styles.css');
+
+  assert.match(html, /class="carousel-swipe-hint"[^>]*>[^<]*Desliza/i);
+  assert.match(css, /\.testimonial-track\s*\{[^}]*overflow-x:\s*auto/);
+  assert.match(css, /\.testimonial-track\s*\{[^}]*scroll-snap-type:\s*x\s*mandatory/);
+});
+
+test('allows explicit resume while the toggle retains focus and offers restart after autoplay completes', () => {
+  const script = read('script.js');
+  const events = new Map();
+  let timerCallback = null;
+  let intersectionCallback;
+  const cards = Array.from({ length: 12 }, (_, index) => ({
+    getBoundingClientRect() { return { left: index * 280, width: 250 }; },
+  }));
+  const control = (name) => ({
+    disabled: false,
+    textContent: '',
+    attributes: {},
+    addEventListener(event, callback) { events.set(`${name}:${event}`, callback); },
+    setAttribute(name, value) { this.attributes[name] = value; },
+  });
+  const track = {
+    clientWidth: 300,
+    scrollLeft: 0,
+    addEventListener(event, callback) { events.set(`track:${event}`, callback); },
+    getBoundingClientRect() { return { left: 0 }; },
+    querySelectorAll() { return cards; },
+    scrollTo() {},
+  };
+  const section = {
+    addEventListener(event, callback) { events.set(`section:${event}`, callback); },
+    contains() { return true; },
+  };
+  const toggle = control('toggle');
+  const nodes = {
+    '[data-testimonial-track]': track,
+    '[data-carousel-section]': section,
+    '[data-carousel-previous]': control('previous'),
+    '[data-carousel-next]': control('next'),
+    '[data-carousel-autoplay-toggle]': toggle,
+    '[data-carousel-counter]': { textContent: '' },
+  };
+  const document = {
+    visibilityState: 'visible',
+    querySelector(selector) { return nodes[selector] ?? null; },
+    addEventListener() {},
+  };
+  class FakeIntersectionObserver {
+    constructor(callback) { intersectionCallback = callback; }
+    observe() { intersectionCallback([{ isIntersecting: true }]); }
+  }
+  const window = {
+    matchMedia() { return { matches: false, addEventListener() {} }; },
+    IntersectionObserver: FakeIntersectionObserver,
+  };
+
+  vm.runInNewContext(script, {
+    document,
+    window,
+    setInterval(callback) { timerCallback = callback; return 1; },
+    clearInterval() { timerCallback = null; },
+  });
+
+  events.get('toggle:click')();
+  assert.equal(timerCallback, null, 'pause click stops autoplay');
+  events.get('section:focusin')();
+  events.get('toggle:click')();
+  assert.equal(typeof timerCallback, 'function', 'explicit resume must override retained focus');
+
+  for (let index = 0; index < 11; index += 1) timerCallback();
+  assert.equal(toggle.disabled, false, 'completed autoplay remains restartable');
+  assert.equal(toggle.attributes['aria-label'], 'Reiniciar reproducción automática');
+  events.get('toggle:click')();
+  assert.equal(nodes['[data-carousel-counter]'].textContent, '1 / 12', 'restart returns to the first example');
+  assert.equal(typeof timerCallback, 'function', 'restart begins autoplay again');
+});

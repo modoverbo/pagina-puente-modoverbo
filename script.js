@@ -23,15 +23,15 @@
     const motionReduced = reducedMotion.matches;
     const stoppedAtEnd = autoplayFinished;
     const paused = userPaused || motionReduced || stoppedAtEnd;
-    autoplayToggle.disabled = motionReduced || stoppedAtEnd;
+    autoplayToggle.disabled = motionReduced;
     autoplayToggle.setAttribute('aria-pressed', String(paused));
 
     if (motionReduced) {
       autoplayToggle.setAttribute('aria-label', 'Reproducción automática desactivada por preferencia de movimiento reducido');
       autoplayToggle.textContent = 'Desactivada';
     } else if (stoppedAtEnd) {
-      autoplayToggle.setAttribute('aria-label', 'Reproducción automática finalizada');
-      autoplayToggle.textContent = 'Finalizada';
+      autoplayToggle.setAttribute('aria-label', 'Reiniciar reproducción automática');
+      autoplayToggle.textContent = 'Reiniciar';
     } else if (userPaused) {
       autoplayToggle.setAttribute('aria-label', 'Reanudar reproducción automática');
       autoplayToggle.textContent = 'Reanudar';
@@ -89,8 +89,16 @@
   previous.addEventListener('click', () => goTo(activeIndex - 1));
   next.addEventListener('click', () => goTo(activeIndex + 1));
   autoplayToggle?.addEventListener('click', () => {
-    if (reducedMotion.matches || autoplayFinished) return;
+    if (reducedMotion.matches) return;
+    if (autoplayFinished) {
+      autoplayFinished = false;
+      userPaused = false;
+      hasFocus = false;
+      goTo(0);
+      return;
+    }
     userPaused = !userPaused;
+    if (!userPaused) hasFocus = false;
     refreshAutoplay();
   });
 
