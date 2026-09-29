@@ -1,0 +1,14 @@
+[2026-09-29T04:08:46.408Z] [CodeGraph daemon] Listening on /home/julian/proyectos/modoverbo/pagina-puente-modoverbo/.codegraph/daemon.sock (pid 2428486, v1.6.0). Idle timeout 300000ms.
+[2026-09-29T04:08:46.465Z] [CodeGraph MCP] File watcher active — graph will auto-sync on changes
+[2026-09-29T04:08:46.474Z] [CodeGraph MCP] Query pool: up to 11 worker thread(s) for concurrent reads.
+[2026-09-29T04:17:34.068Z] [CodeGraph MCP] Auto-synced 1 file(s) in 115ms
+[2026-09-29T04:17:55.975Z] [CodeGraph MCP] Auto-synced 1 file(s) in 10ms
+[2026-09-29T04:20:50.043Z] [CodeGraph MCP] Auto-synced 1 file(s) in 44ms
+[2026-09-29T04:21:37.512Z] [CodeGraph MCP] Auto-synced 1 file(s) in 20ms
+[2026-09-29T04:23:35.918Z] [CodeGraph MCP] Auto-synced 1 file(s) in 18ms
+[2026-09-29T04:29:55.529Z] [CodeGraph MCP] Auto-synced 1 file(s) in 19ms
+[2026-09-29T04:30:16.177Z] [CodeGraph MCP] Auto-synced 1 file(s) in 18ms
+[2026-09-29T04:30:41.720Z] [CodeGraph MCP] Auto-synced 1 file(s) in 7ms
+[2026-09-29T04:36:10.127Z] [CodeGraph MCP] Auto-synced 1 file(s) in 12ms
+[2026-09-29T04:36:21.389Z] [CodeGraph MCP] Auto-synced 1 file(s) in 7ms
+[2026-09-29T04:45:50.227Z] [CodeGraph MCP] Auto-synced 2 file(s) in 41ms
