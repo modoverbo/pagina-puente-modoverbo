@@ -99,16 +99,21 @@ test('shows twelve fictional examples, a visible disclosure, and local described
   assert.ok(html.includes('No soy de leer muchos libros, pero este sí me atrapó'));
 });
 
-test('carousel exposes semantic controls, a live position, keyboard navigation, and reduced motion', () => {
+test('carousel exposes centered icon-only playback controls, keyboard navigation, and reduced motion', () => {
   const html = read('index.html');
   const css = read('styles.css');
   const script = read('script.js');
 
-  assert.match(html, /aria-live="polite"[^>]*data-carousel-counter/);
   assert.match(html, /aria-label="Testimonio anterior"[^>]*data-carousel-previous/);
   assert.match(html, /aria-label="Testimonio siguiente"[^>]*data-carousel-next/);
-  assert.match(html, /aria-label="Pausar reproducción automática" aria-pressed="false" data-carousel-autoplay-toggle>Pausar/);
+  assert.doesNotMatch(html, /data-carousel-counter|1 \/ 12/);
+  assert.match(html, /aria-label="Pausar reproducción automática" aria-pressed="false" data-carousel-autoplay-toggle>\s*<svg[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/svg>\s*<svg[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/svg>\s*<\/button>/);
+  assert.match(html, /data-carousel-previous[^>]*>[\s\S]*?data-carousel-autoplay-toggle>[\s\S]*?data-carousel-next/);
   assert.match(html, /data-testimonial-track[^>]*tabindex="0"/);
+  assert.match(html, /Desliza para explorar más historias/);
+  assert.match(css, /\.carousel-controls\s*\{[^}]*justify-content:\s*center/);
+  assert.match(css, /\.carousel-swipe-hint\s*\{[^}]*text-align:\s*center/);
+  assert.match(css, /\.carousel-toggle\s*\{[^}]*width:\s*39px[^}]*padding:\s*0/);
   assert.match(css, /scroll-snap-type:\s*x\s*mandatory/);
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
 
@@ -132,7 +137,6 @@ test('carousel exposes semantic controls, a live position, keyboard navigation, 
     card.offsetLeft = 100 + index * 280;
     card.getBoundingClientRect = () => ({ left: 100 + index * 280, width: 250 });
   });
-  const counter = { textContent: '' };
   const toggle = {
     disabled: false,
     textContent: 'Pausar',
@@ -145,7 +149,6 @@ test('carousel exposes semantic controls, a live position, keyboard navigation, 
     '[data-carousel-previous]': listen('previous'),
     '[data-carousel-next]': listen('next'),
     '[data-carousel-autoplay-toggle]': toggle,
-    '[data-carousel-counter]': counter,
   };
   const document = {
     querySelector(selector) { return nodes[selector] ?? null; },
@@ -154,16 +157,15 @@ test('carousel exposes semantic controls, a live position, keyboard navigation, 
   const window = { matchMedia() { return { matches: false }; } };
 
   vm.runInNewContext(script, { document, window });
-  assert.equal(counter.textContent, '1 / 12');
   events.get('next:click')();
-  assert.equal(counter.textContent, '2 / 12');
+  assert.equal(toggle.attributes['aria-label'], 'Pausar reproducción automática');
   assert.equal(scrollRequests.at(-1).behavior, 'smooth');
   assert.equal(scrollRequests.at(-1).left, 255, 'card position must be measured relative to a track offset by 100px');
   assert.equal(toggle.attributes['aria-pressed'], 'false');
   events.get('track:keydown')({ key: 'ArrowRight', preventDefault() {} });
-  assert.equal(counter.textContent, '3 / 12');
+  assert.equal(scrollRequests.length, 2);
   events.get('previous:click')();
-  assert.equal(counter.textContent, '2 / 12');
+  assert.equal(scrollRequests.length, 3);
 });
 
 test('keeps mobile artwork inside cards and shows one complete carousel card', () => {
@@ -178,7 +180,7 @@ test('keeps mobile artwork inside cards and shows one complete carousel card', (
   assert.match(mobileRules, /\.testimonial-track::-webkit-scrollbar\s*\{[^}]*display:\s*none/);
 });
 
-test('autoplay runs only while visible, pauses on interaction, and stops at the last example', () => {
+test('autoplay runs only while visible, pauses on interaction, and loops from the last example to the first', () => {
   const script = read('script.js');
   const events = new Map();
   let timerCallback;
@@ -205,7 +207,6 @@ test('autoplay runs only while visible, pauses on interaction, and stops at the 
   const section = {
     addEventListener(event, callback) { events.set(`section:${event}`, callback); },
   };
-  const counter = { textContent: '' };
   const toggle = {
     disabled: false,
     textContent: 'Pausar',
@@ -217,7 +218,6 @@ test('autoplay runs only while visible, pauses on interaction, and stops at the 
     '[data-testimonial-track]': track,
     '[data-carousel-previous]': listen('previous'),
     '[data-carousel-next]': listen('next'),
-    '[data-carousel-counter]': counter,
     '[data-carousel-autoplay-toggle]': toggle,
     '[data-carousel-section]': section,
   };
@@ -244,7 +244,6 @@ test('autoplay runs only while visible, pauses on interaction, and stops at the 
   });
 
   assert.equal(timerDelay, 6000);
-  assert.equal(counter.textContent, '1 / 12');
   assert.equal(toggle.attributes['aria-pressed'], 'false');
   events.get('toggle:click')();
   assert.equal(timerCallback, null, 'explicit pause suspends all later automatic movement');
@@ -254,7 +253,6 @@ test('autoplay runs only while visible, pauses on interaction, and stops at the 
   assert.equal(typeof timerCallback, 'function', 'explicit resume allows autoplay when motion is permitted');
   assert.equal(toggle.attributes['aria-pressed'], 'false');
   timerCallback();
-  assert.equal(counter.textContent, '2 / 12');
   assert.ok(activeScroll > 0, 'navigation should scroll the track horizontally');
 
   events.get('section:mouseenter')();
@@ -274,8 +272,11 @@ test('autoplay runs only while visible, pauses on interaction, and stops at the 
   assert.equal(typeof timerCallback, 'function');
 
   for (let index = 0; index < 10; index += 1) timerCallback();
-  assert.equal(counter.textContent, '12 / 12');
-  assert.equal(timerCallback, null, 'autoplay stops at the end instead of wrapping');
+  assert.ok(activeScroll > 0, 'autoplay reaches the last card');
+  timerCallback();
+  assert.equal(activeScroll, 0, 'the next automatic movement wraps directly to the first card');
+  assert.equal(typeof timerCallback, 'function', 'autoplay continues after wrapping');
+  assert.equal(toggle.attributes['aria-label'], 'Pausar reproducción automática');
 });
 
 test('does not autoplay when reduced motion is enabled', () => {
@@ -300,7 +301,6 @@ test('does not autoplay when reduced motion is enabled', () => {
     '[data-testimonial-track]': track,
     '[data-carousel-previous]': button(),
     '[data-carousel-next]': button(),
-    '[data-carousel-counter]': { textContent: '' },
   };
   const toggle = {
     disabled: false,
@@ -408,6 +408,7 @@ test('allows explicit resume while the pointer hovers and the toggle retains foc
   let scrollOffset = 0;
   const scrollRequests = [];
   const cards = Array.from({ length: 12 }, (_, index) => ({
+    clientWidth: 250,
     getBoundingClientRect() { return { left: index * 280 - scrollOffset, width: 250 }; },
   }));
   const control = (name) => ({
@@ -439,7 +440,6 @@ test('allows explicit resume while the pointer hovers and the toggle retains foc
     '[data-carousel-previous]': control('previous'),
     '[data-carousel-next]': control('next'),
     '[data-carousel-autoplay-toggle]': toggle,
-    '[data-carousel-counter]': { textContent: '' },
   };
   const document = {
     visibilityState: 'visible',
@@ -482,23 +482,16 @@ test('allows explicit resume while the pointer hovers and the toggle retains foc
   events.get('section:focusout')({ relatedTarget: null });
   assert.equal(typeof timerCallback, 'function', 'leaving a later focus resumes autoplay');
 
-  for (let index = 0; index < 11; index += 1) timerCallback();
-  assert.equal(toggle.disabled, false, 'completed autoplay remains restartable');
-  assert.equal(toggle.attributes['aria-label'], 'Reiniciar reproducción automática');
-
-  events.get('section:mouseenter')();
-  events.get('section:focusin')();
-  scrollOffset = 11 * 280;
-  events.get('track:scroll')();
+  for (let index = 0; index < 12; index += 1) timerCallback();
+  assert.equal(scrollRequests.at(-1).left, 0, 'the twelfth movement returns to the first example');
+  assert.equal(toggle.disabled, false, 'play/pause remains available throughout playback');
+  assert.equal(toggle.attributes['aria-label'], 'Pausar reproducción automática');
   events.get('toggle:click')();
-  assert.equal(nodes['[data-carousel-counter]'].textContent, '1 / 12', 'restart returns to the first example');
-  assert.equal(scrollRequests.at(-1).behavior, 'auto', 'restart avoids traversing intermediate cards');
-  events.get('track:scroll')();
-  assert.equal(nodes['[data-carousel-counter]'].textContent, '1 / 12', 'restart transition stays at the first example');
-  assert.equal(toggle.textContent, 'Pausar', 'restart transition keeps the active-play label');
-  assert.equal(typeof timerCallback, 'function', 'restart begins autoplay again');
-  timerCallback();
-  assert.equal(nodes['[data-carousel-counter]'].textContent, '2 / 12', 'autoplay advances after restart despite retained hover and focus');
+  assert.equal(timerCallback, null, 'pause remains available after the carousel loops');
+  assert.equal(toggle.attributes['aria-label'], 'Reanudar reproducción automática');
+  events.get('toggle:click')();
+  assert.equal(typeof timerCallback, 'function', 'resume starts playback after the carousel loops');
+  assert.equal(toggle.attributes['aria-label'], 'Pausar reproducción automática');
 });
 
 test('layers authentic local edition pages behind the existing book cover with responsive insets', () => {
